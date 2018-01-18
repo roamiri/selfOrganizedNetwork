@@ -1,0 +1,12 @@
+alpha = 72.0;
+beta = 2.92;
+d = 30:10:200;
+sigma2 = 10^0.87;
+X = sigma2 * randn(1,size(d,2));
+PL1 = alpha + beta * 10 * log10(d);
+PL2 = 62.3+32*log10(d/5);
+semilogx(d,PL1,'-r');
+hold on;
+semilogx(d,PL2,'-b');
+% xlim([30 200]);
+grid on;
