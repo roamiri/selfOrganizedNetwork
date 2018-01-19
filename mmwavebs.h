@@ -8,11 +8,13 @@
 #include <vector>
 #include <sys/prctl.h>
 
+enum Status{idle, candiate, inBound, outBound, clusterHead};
+
 class mmWaveBS{
 public:
     /* Explicitly using the default constructor to
      * underline the fact that it does get called */
-    mmWaveBS(double x, double y, uint32_t id) : the_thread() { xx =x; yy =y; m_id =id;}
+    mmWaveBS(double x, double y, uint32_t id, Status st=idle) : the_thread() { xx =x; yy =y; m_id =id; m_status = st;}
     ~mmWaveBS()
     {
         stop_thread = true;
@@ -31,12 +33,16 @@ public:
     
 private:
     std::thread the_thread;
-    bool stop_thread = false;
-    uint32_t m_id;
+	bool stop_thread = false;
+    void ThreadMain();
+    
+	uint32_t m_id;
     int cluster_id = -1;
     double xx;
     double yy;
-    void ThreadMain();
+	Status m_status;
+	
+	timer_t T;
 };
 
 
