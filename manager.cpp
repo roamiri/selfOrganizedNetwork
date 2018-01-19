@@ -27,9 +27,17 @@ Manager::~Manager()
     false;
 }
 
-void Manager::listen(const std::string& message)
+void Manager::listen_For_Candidacy(const std::string& message)
 {
-    std::cout << " Manager received: " << message << std::endl;
+    std::cout << " Candidate received: " << message << std::endl;
 }
 
+void Manager::listen_For_ClusterHead(const std::string& message)
+{
+	std::cout << " Cluster Head received: " << message << std::endl;
+}
 
+void Manager::listen_For_Conflict(const std::string& message)
+{
+	std::cout << " Conflict received: " << message << std::endl;
+}

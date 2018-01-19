@@ -11,7 +11,9 @@ class Manager
         
         Manager(bool start);
         ~Manager();
-        void listen(std::string const &message);
+        void listen_For_Candidacy(std::string const &message);
+		void listen_For_ClusterHead(std::string const &message);
+		void listen_For_Conflict(std::string const &message);
         std::vector<mmWaveBS*> vector_BSs;
 };
 

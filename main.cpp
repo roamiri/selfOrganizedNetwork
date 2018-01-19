@@ -7,29 +7,23 @@
 
 #include "manager.h"
 #include "mmwavebs.h"
+#include "idgenerator.h"
+
 
 int main() {
     
   Manager manager(true);
+  IDGenerator* _idGenerator = IDGenerator::instance();
   
-  
-//   mmWaveBS BS(3.0 , 3.0);
-//   BS.candidacy.connect( &Manager::listen);
-  
-  mmWaveBS* BS1 = new mmWaveBS(3.0 , 3.0, 0);
-  BS1->Start();
-//   BS1->setClusterID(0);
-  BS1->candidacy.connect_member(&manager, &Manager::listen);
-  
-  mmWaveBS* BS2 = new mmWaveBS(3.0 , 4.0, 1);
-  BS2->Start();
-//   BS2->candidacy.connect_member(BS1, &mmWaveBS::listen);
-  mmWaveBS* BS3 = new mmWaveBS(3.0 , 10.0, 2);
-  BS3->Start();
-  BS3->setClusterID(2);
-  manager.vector_BSs.push_back(BS1);
-  manager.vector_BSs.push_back(BS2);
-  manager.vector_BSs.push_back(BS3);
+  for(int i =0;i<16;i++)
+  {
+	mmWaveBS* BS = new mmWaveBS(3.0*i , 3.0*i, _idGenerator->next());
+	manager.vector_BSs.push_back(BS);
+	BS->Start();
+	BS->candidacy.connect_member(&manager, &Manager::listen_For_Candidacy);
+	BS->clusterHead.connect_member(&manager, &Manager::listen_For_ClusterHead);
+	BS->conflict.connect_member(&manager, &Manager::listen_For_Conflict);
+  }
  
   while(1){true;}
   return 0;

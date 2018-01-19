@@ -12,7 +12,7 @@ class mmWaveBS{
 public:
     /* Explicitly using the default constructor to
      * underline the fact that it does get called */
-    mmWaveBS(double x, double y, int id) : the_thread() { xx =x; yy =y; m_id =id;}
+    mmWaveBS(double x, double y, uint32_t id) : the_thread() { xx =x; yy =y; m_id =id;}
     ~mmWaveBS()
     {
         stop_thread = true;
@@ -32,7 +32,7 @@ public:
 private:
     std::thread the_thread;
     bool stop_thread = false;
-    int m_id;
+    uint32_t m_id;
     int cluster_id = -1;
     double xx;
     double yy;

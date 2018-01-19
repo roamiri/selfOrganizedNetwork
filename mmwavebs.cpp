@@ -4,12 +4,14 @@ void mmWaveBS::Start()
 {
     // This will start the thread. Notice move semantics!
     the_thread = std::thread(&mmWaveBS::ThreadMain,this);
+    
     char thread_name [20];
     sprintf(thread_name, "BS_%d",m_id);
     prctl(PR_SET_NAME,thread_name,0,0,0);
+    
     char thread_name_buffer[20];
     prctl(PR_GET_NAME, thread_name_buffer, 0L, 0L, 0L);
-    std::cout << "Class " << thread_name_buffer << " has started!" << std::endl;
+    std::cout << "Class " << thread_name_buffer << "has started!" << std::endl;
 }
 
 void mmWaveBS::listen(const std::string& message)
