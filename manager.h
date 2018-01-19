@@ -3,14 +3,17 @@
 #define MANAGER_H
 
 #include <iostream>
+#include <thread>
 #include "common.h"
 #include "mmwavebs.h"
+#include <memory>
+#include "painter.h"
 
 class Manager
 {
     public:
         
-        Manager(bool start);
+        Manager(std::shared_ptr<Painter> p);
         ~Manager();
         
 		void listen_For_Candidacy(candidacy_msg const &message);
@@ -20,6 +23,11 @@ class Manager
 		void makeCluster(uint32_t id);
 		
         std::vector<mmWaveBS*> m_vector_BSs;
+		
+private:
+	std::shared_ptr<Painter> m_painter;
+	bool stop_thread = false;
+	std::thread m_draw_thread;
 };
 
 #endif // MANAGER_H

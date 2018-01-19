@@ -18,14 +18,18 @@
 #include "manager.h"
 #include <math.h>
 
-Manager::Manager(bool start)
+Manager::Manager(std::shared_ptr<Painter>p)
+:m_draw_thread()
 {
+	m_painter = p;
     std::cout << "Manager started!\n";
 }
 
 Manager::~Manager()
 {
-    false;
+	stop_thread = true;
+	if(m_draw_thread.joinable()) m_draw_thread.join();
+	std::cout << "Deconstruct " << __FILE__ << std::endl;
 }
 
 void Manager::listen_For_Candidacy(const candidacy_msg& message)
@@ -70,6 +74,9 @@ void Manager::joinCluster(uint32_t id, uint32_t cluster_id, Status st)
 		{
 			(*it)->setClusterID(cluster_id);
 			(*it)->setStatus(st);
+			std::shared_ptr<draw_object> new_node = std::make_shared<draw_object>((*it)->getX(), (*it)->getY(), cluster_id);
+			m_painter.get()->add_to_draw_queue(new_node);
+			m_painter.get()->Enable();
 			std::cout << "The BS_" << id << " joined cluster: " << cluster_id << " as " << st << std::endl;
 			break;
 		}
@@ -83,6 +90,9 @@ void Manager::makeCluster(uint32_t id)
 		{
 			(*it)->setClusterID(id);
 			(*it)->setStatus(Status::clusterHead);
+			std::shared_ptr<draw_object> new_node = std::make_shared<draw_object>((*it)->getX(), (*it)->getY(), (*it)->getID());
+			m_painter.get()->add_to_draw_queue(new_node);
+			m_painter.get()->Enable();
 			std::cout << "The BS_" << id << " is Cluster Head!!" << std::endl;
 			break;
 		}

@@ -31,4 +31,14 @@ struct candidacy_msg
 	candidacy_msg(double xx,double yy,uint32_t ii){x = xx; y = yy; id = ii;}
 };
 
+class draw_object
+{
+public:
+	draw_object(double xx, double yy, uint32_t ii)
+	{x = xx; y= yy; cluster_id = ii;}
+	double x;
+	double y;
+	uint32_t cluster_id;
+};
+
 #endif // COMMON_H

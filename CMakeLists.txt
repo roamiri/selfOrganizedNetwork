@@ -4,7 +4,7 @@ SET(CMAKE_CXX_FLAGS "-std=c++0x")
 
 
 
-add_executable(selfOrganizedNetwork main.cpp manager.cpp mmwavebs.cpp common.h)
+add_executable(selfOrganizedNetwork main.cpp manager.cpp mmwavebs.cpp painter.cpp simple_svg.cpp common.h)
 
 target_link_libraries(selfOrganizedNetwork -lpthread)
 
