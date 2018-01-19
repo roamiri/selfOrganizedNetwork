@@ -23,12 +23,17 @@ void mmWaveBS::ThreadMain()
 {
     while(!stop_thread)
     {
-        if(cluster_id == -1)
-        {
-            candidacy.emit(std::to_string(xx) + "," + std::to_string(yy));
-        }
-        
+		if(m_status == Status::idle)
+		{
+			counter(5.0);
+			if(m_status == Status::idle)
+			{
+				candidacy_msg message(m_xx, m_yy, m_id);
+				candidacy.emit(message);
+			}
+		}
+
         // Do something useful, e.g:
-        std::this_thread::sleep_for( std::chrono::seconds(1) );
+//         std::this_thread::sleep_for( std::chrono::seconds(1) );
     }
 }
