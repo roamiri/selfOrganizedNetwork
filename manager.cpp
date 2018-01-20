@@ -20,10 +20,10 @@
 #include <limits>
 #include <random>
 
-Manager::Manager(std::shared_ptr<Painter>p)
+Manager::Manager()
 :m_draw_thread()
 {
-	m_painter = p;
+// 	m_painter = p;
     std::cout << "Manager started!\n";
 }
 
@@ -37,30 +37,68 @@ Manager::~Manager()
 void Manager::listen_For_Candidacy(const candidacy_msg& message)
 {
 //     std::cout << " Candidate received: xx = " << message.x << ", y=" << message.y << " from id=" << message.id << std::endl;
+	uint32_t candidate_id = message.id;
+	double x = message.x;
+	double y = message.y;
 	bool ib_found = false;
-	for(std::vector<mmWaveBS*>::iterator it = m_vector_BSs.begin(); it != m_vector_BSs.end(); ++it) 
+	std::lock_guard<std::mutex> guard(m_mutex);
+	for(std::vector<std::shared_ptr<mmWaveBS>>::iterator it = m_vector_BSs.begin(); it != m_vector_BSs.end(); ++it) 
 	{
-		mmWaveBS* mmB = (*it);
-		if(euclidean_dist2(message.y, message.y, mmB->getX(), mmB->getY()) <=  pow(in_bound, 2))
+		std::shared_ptr<mmWaveBS> mmB = (*it);
+		if(euclidean_dist2(x, y, mmB->getX(), mmB->getY()) <=  pow(in_bound, 2))
+		{
 			if(mmB->getStatus()==Status::clusterHead)
 			{
 				ib_found = true;
-				joinCluster(message.id, mmB->getClusterID(), Status::inBound);
+				joinCluster(candidate_id, Status::inBound, mmB->getClusterID(), mmB->getColor());
 				break;
 			}
 			else if((mmB->getStatus()==Status::inBound))
 			{
 				ib_found = true;
-				joinCluster(message.id, mmB->getClusterID(), Status::outBound);
+				joinCluster(candidate_id, Status::outBound, mmB->getClusterID(), mmB->getColor());
 			}
+		}
 	}
 	if(!ib_found)
 		makeCluster(message.id);
 }
 
-void Manager::listen_For_ClusterHead(const std::string& message)
+void Manager::listen_For_ClusterHead(const cluster_head_msg& message)
 {
-	std::cout << " Cluster Head received: " << message << std::endl;
+// 	std::cout << " Cluster Head received: " << message << std::endl;
+	uint32_t new_cluster_id = message.id;
+	double x = message.x;
+	double y = message.y;
+	std::size_t new_cluster_color = message.color;
+	
+	std::lock_guard<std::mutex> guard(m_mutex);
+	for(std::vector<std::shared_ptr<mmWaveBS>>::iterator it=m_vector_BSs.begin(); it != m_vector_BSs.end(); ++it)
+	{
+		std::shared_ptr<mmWaveBS> mmB = (*it);
+		double dist2 = euclidean_dist2(x, y, mmB->getX(), mmB->getY());
+		if( dist2 <=  pow(out_bound, 2))
+		{
+			if(dist2 <=  pow(in_bound, 2))
+			{
+// 				if(mmB->getStatus()==Status::idle)
+// 				{
+					mmB->setClusterID(new_cluster_id);
+					mmB->setStatus(Status::inBound);
+					mmB->setColor(new_cluster_color);
+// 				}
+			}
+			else
+			{
+				if(mmB->getStatus()==Status::idle)
+				{
+					mmB->setClusterID(new_cluster_id);
+					mmB->setStatus(Status::outBound);
+					mmB->setColor(new_cluster_color);
+				}
+			}
+		}
+	}
 }
 
 void Manager::listen_For_Conflict(const std::string& message)
@@ -68,17 +106,19 @@ void Manager::listen_For_Conflict(const std::string& message)
 	std::cout << " Conflict received: " << message << std::endl;
 }
 
-void Manager::joinCluster(uint32_t id, uint32_t cluster_id, Status st)
+void Manager::joinCluster(uint32_t id, Status st, uint32_t cluster_id, std::size_t color)
 {
-	for(std::vector<mmWaveBS*>::iterator it = m_vector_BSs.begin(); it != m_vector_BSs.end(); ++it)
+	std::lock_guard<std::mutex> guard(m_mutex);
+	for(std::vector<std::shared_ptr<mmWaveBS>>::iterator it = m_vector_BSs.begin(); it != m_vector_BSs.end(); ++it)
 	{
 		if((*it)->getID()==id)
 		{
 			(*it)->setClusterID(cluster_id);
 			(*it)->setStatus(st);
-			std::shared_ptr<draw_object> new_node = std::make_shared<draw_object>((*it)->getX(), (*it)->getY(), cluster_id);
-			m_painter.get()->add_to_draw_queue(new_node);
-			m_painter.get()->Enable();
+			(*it)->setColor(color);
+// 			std::shared_ptr<draw_object> new_node = std::make_shared<draw_object>((*it)->getX(), (*it)->getY(), cluster_id);
+// 			m_painter.get()->add_to_draw_queue(new_node);
+// 			m_painter.get()->Enable();
 			std::cout << "The BS_" << id << " joined cluster: " << cluster_id << " as " << st << std::endl;
 			break;
 		}
@@ -87,18 +127,17 @@ void Manager::joinCluster(uint32_t id, uint32_t cluster_id, Status st)
 
 void Manager::makeCluster(uint32_t id)
 {
-	for(std::vector<mmWaveBS*>::iterator it=m_vector_BSs.begin(); it!=m_vector_BSs.end();++it)
+	std::lock_guard<std::mutex> guard(m_mutex);
+	for(std::vector<std::shared_ptr<mmWaveBS>>::iterator it=m_vector_BSs.begin(); it!=m_vector_BSs.end();++it)
 		if((*it)->getID()==id)
 		{
-			std::random_device rd;     //Get a random seed from the OS entropy device, or whatever
-			std::mt19937_64 eng(rd()); 
-			std::uniform_int_distribution<unsigned long long> distr;
-			uint32_t clid = (uint32_t) distr(eng);
-			(*it)->setClusterID(clid);
+			(*it)->setClusterID(id);
 			(*it)->setStatus(Status::clusterHead);
-			std::shared_ptr<draw_object> new_node = std::make_shared<draw_object>((*it)->getX(), (*it)->getY(), (*it)->getID());
-			m_painter.get()->add_to_draw_queue(new_node);
-			m_painter.get()->Enable();
+			(*it)->setColor(generateColor());
+			(*it).get()->declare_as_cluster_head();
+// 			std::shared_ptr<draw_object> new_node = std::make_shared<draw_object>((*it)->getX(), (*it)->getY(), (*it)->getID());
+// 			m_painter.get()->add_to_draw_queue(new_node);
+// 			m_painter.get()->Enable();
 			std::cout << "The BS_" << id << " is Cluster Head!!" << std::endl;
 			break;
 		}

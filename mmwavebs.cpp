@@ -37,3 +37,17 @@ void mmWaveBS::ThreadMain()
 //         std::this_thread::sleep_for( std::chrono::seconds(1) );
     }
 }
+
+void mmWaveBS::setColor(std::size_t color)
+{
+	m_color = color;
+	std::size_t red = (color & 0xff0000) >> 16; m_rgb_color[0] = red;
+	std::size_t green =(color & 0x00ff00) >> 8; m_rgb_color[1] = green;
+	std::size_t blue = (color & 0x0000ff);  	m_rgb_color[2] = blue;
+}
+
+void mmWaveBS::declare_as_cluster_head()
+{
+	cluster_head_msg message(m_xx, m_yy, m_id, m_color);
+	clusterHead.emit(message);
+}

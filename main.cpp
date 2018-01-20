@@ -15,8 +15,8 @@
 int main() {
     
   IDGenerator* _idGenerator = IDGenerator::instance();
-  std::shared_ptr<Painter> _painter = std::make_shared<Painter>();
-  Manager manager(_painter);
+  Manager manager;
+  std::shared_ptr<Painter> _painter = std::make_shared<Painter>(manager.m_vector_BSs);
   _painter.get()->Start();
   
   
@@ -31,18 +31,19 @@ int main() {
 //   double theta = 100.0;
 //   p2-> transform(0,theta);
   
-  	mmWaveBS* BS = new mmWaveBS(100.0 *p2->data[0].pt[0] , 100.0 *p2->data[0].pt[1], _idGenerator->next());
-	BS->setClusterID(BS->getID());
-	BS->setStatus(Status::clusterHead);
-	manager.m_vector_BSs.push_back(BS);
-	BS->Start();
-	BS->candidacy.connect_member(&manager, &Manager::listen_For_Candidacy);
-	BS->clusterHead.connect_member(&manager, &Manager::listen_For_ClusterHead);
-	BS->conflict.connect_member(&manager, &Manager::listen_For_Conflict);
-  
+//   	mmWaveBS* BS = new mmWaveBS(100.0 *p2->data[0].pt[0] , 100.0 *p2->data[0].pt[1], _idGenerator->next());
+// 	BS->setClusterID(BS->getID());
+// 	BS->setStatus(Status::clusterHead);
+// 	manager.m_vector_BSs.push_back(BS);
+// 	BS->Start();
+// 	BS->candidacy.connect_member(&manager, &Manager::listen_For_Candidacy);
+// 	BS->clusterHead.connect_member(&manager, &Manager::listen_For_ClusterHead);
+// 	BS->conflict.connect_member(&manager, &Manager::listen_For_Conflict);
+//   
 	for(int i =1;i<num_nodes;i++)
 	{
-		mmWaveBS* BS = new mmWaveBS(100.0 *p2->data[i].pt[0] , 100.0 *p2->data[i].pt[1], _idGenerator->next());
+		std::shared_ptr<mmWaveBS> BS = std::make_shared<mmWaveBS>(100.0 *p2->data[i].pt[0] , 100.0 *p2->data[i].pt[1], _idGenerator->next());
+		BS.get()->setColor(0);
 		manager.m_vector_BSs.push_back(BS);
 		BS->Start();
 		BS->candidacy.connect_member(&manager, &Manager::listen_For_Candidacy);

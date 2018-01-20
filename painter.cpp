@@ -31,9 +31,11 @@
 
 using namespace svg;
 
-Painter::Painter()
-:m_draw_thread()//,m_dimesnions(100,100),m_doc("my_svg.svg", svg::Layout(m_dimesnions, svg::Layout::BottomLeft))
+Painter::Painter(std::vector<std::shared_ptr<mmWaveBS>>const &nodes)
+:m_draw_thread(),
+m_nodes(nodes)
 {
+// 	m_nodes = &nodes;
 	m_dimesnions = new svg::Dimensions(100, 100);
 	m_doc = new svg::Document("network.svg", svg::Layout(*m_dimesnions, svg::Layout::BottomLeft));
 }
@@ -59,11 +61,11 @@ void Painter::ThreadMain()
 	while(!m_stopThread)
 	{
 		std::this_thread::sleep_for( std::chrono::seconds(1) );
-		if(m_draw)
-		{
-			update();
-			m_draw = false;
-		}
+		update();
+// 		if(m_draw)
+// 		{
+// 			m_draw = false;
+// 		}
 		
 	}
 }
@@ -83,24 +85,23 @@ void Painter::add_to_draw_queue(std::shared_ptr<draw_object> dd)
 
 void Painter::update()
 {
-	for(std::vector<std::shared_ptr<draw_object>>::iterator it=m_objects.begin(); it!=m_objects.end();++it)
+	int size = m_nodes.size();
+	for(int i=0;i<size;i++)
 	{
-		std::shared_ptr<draw_object> dd = (*it);
-		double x = dd.get()->x;
-		double y = dd.get()->y;
+		std::shared_ptr<mmWaveBS> dd = m_nodes[i];
+		double x = dd.get()->getX();
+		double y = dd.get()->getY();
 	
-		std::size_t color = (std::size_t) ((int)100*(dd.get()->cluster_id));
-		std::size_t red   = (color & 0xff0000) >> 16;
-		std::size_t green = (color & 0x00ff00) >> 8;
-		std::size_t blue  = (color & 0x0000ff);
-
-// 		int color = (int)(dd.get()->cluster_id);
-// 		int red   = (color & 0xff0000) >> 16;
-// 		int green = (color & 0x00ff00) >> 8;
-// 		int blue  = (color & 0x0000ff);
+		std::size_t color = dd.get()->getColor();
+		std::size_t red = (color & 0xff0000) >> 16; 
+		std::size_t green =(color & 0x00ff00) >> 8; 
+		std::size_t blue = (color & 0x0000ff);  	
 		
-// 		std::cout << "drawing at x = " << x << ", y= " << y << std::endl;
-		*m_doc << Circle(Point(x, y), 2, Fill(Color(red,green,blue)), Stroke(1, Color(red, green, blue)));
+		if(dd.get()->getStatus()==Status::clusterHead)
+			*m_doc << Circle(Point(x, y), 2, Fill(Color(0,0,0)), Stroke(1.5, Color(red,green,blue)));
+		else
+			*m_doc << Circle(Point(x, y), 2, Fill(Color(red,green,blue)), Stroke(1, Color(red, green, blue)));
+		
 		m_doc->save();
 	}
 }

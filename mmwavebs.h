@@ -33,10 +33,15 @@ public:
     void setStatus(Status st){m_status = st;}
     
     Signal<candidacy_msg const &> candidacy;
-    Signal<std::string const &> clusterHead;
+    Signal<cluster_head_msg const &> clusterHead;
     Signal<std::string const &> conflict;
 
     void listen(std::string const &message);
+	void setColor(std::size_t color);
+	void declare_as_cluster_head();
+	
+	std::size_t getColor(){return m_color;}
+    std::size_t* get_rgb_Color(){return m_rgb_color;}
     
 private:
     std::thread the_thread;
@@ -50,6 +55,8 @@ private:
 	Status m_status;
 	
 	timer_t T;
+	std::size_t m_rgb_color[3];
+	std::size_t m_color;
 };
 
 

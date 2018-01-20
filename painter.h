@@ -34,11 +34,12 @@
 #include "simple_svg.h"
 #include "common.h"
 #include <memory>
+#include "mmwavebs.h"
 
 class Painter
 {
 public:
-    Painter();
+    Painter(std::vector<std::shared_ptr<mmWaveBS>>const &nodes);
     ~Painter();
 	void Start();
 	
@@ -48,6 +49,8 @@ public:
 private:
 	
 	std::vector<std::shared_ptr<draw_object>> m_objects;
+	std::vector<std::shared_ptr<mmWaveBS>>const &m_nodes;
+	
 	bool m_draw = false;
 	svg::Document* m_doc;
 	svg::Dimensions* m_dimesnions;
