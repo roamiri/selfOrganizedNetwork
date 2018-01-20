@@ -4,6 +4,7 @@
 // #include "stdafx.h"
 #include <iostream>
 #include "time.h"
+#include <math.h>
 
 
 static double in_bound = 10.0;
@@ -41,4 +42,23 @@ public:
 	uint32_t cluster_id;
 };
 
+static int poisson ( double lambda )
+{
+  double u = drand48();
+  int k = 0;
+  double sum = exp(-lambda);
+
+  double sidste = sum;
+
+  while ( true )
+    {
+      if ( u < sum ) { return k; }
+      else 
+	{
+	  k++;
+	  sidste *= lambda/k;
+	  sum += sidste;
+	}
+    }
+}
 #endif // COMMON_H

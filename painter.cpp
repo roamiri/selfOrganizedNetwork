@@ -89,11 +89,16 @@ void Painter::update()
 		double x = dd.get()->x;
 		double y = dd.get()->y;
 	
-		std::size_t color = (std::size_t) (100 * (int)(dd.get()->cluster_id));
+		std::size_t color = (std::size_t) ((int)100*(dd.get()->cluster_id));
 		std::size_t red   = (color & 0xff0000) >> 16;
 		std::size_t green = (color & 0x00ff00) >> 8;
 		std::size_t blue  = (color & 0x0000ff);
 
+// 		int color = (int)(dd.get()->cluster_id);
+// 		int red   = (color & 0xff0000) >> 16;
+// 		int green = (color & 0x00ff00) >> 8;
+// 		int blue  = (color & 0x0000ff);
+		
 // 		std::cout << "drawing at x = " << x << ", y= " << y << std::endl;
 		*m_doc << Circle(Point(x, y), 2, Fill(Color(red,green,blue)), Stroke(1, Color(red, green, blue)));
 		m_doc->save();

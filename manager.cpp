@@ -17,6 +17,8 @@
 
 #include "manager.h"
 #include <math.h>
+#include <limits>
+#include <random>
 
 Manager::Manager(std::shared_ptr<Painter>p)
 :m_draw_thread()
@@ -88,7 +90,11 @@ void Manager::makeCluster(uint32_t id)
 	for(std::vector<mmWaveBS*>::iterator it=m_vector_BSs.begin(); it!=m_vector_BSs.end();++it)
 		if((*it)->getID()==id)
 		{
-			(*it)->setClusterID(id);
+			std::random_device rd;     //Get a random seed from the OS entropy device, or whatever
+			std::mt19937_64 eng(rd()); 
+			std::uniform_int_distribution<unsigned long long> distr;
+			uint32_t clid = (uint32_t) distr(eng);
+			(*it)->setClusterID(clid);
 			(*it)->setStatus(Status::clusterHead);
 			std::shared_ptr<draw_object> new_node = std::make_shared<draw_object>((*it)->getX(), (*it)->getY(), (*it)->getID());
 			m_painter.get()->add_to_draw_queue(new_node);
