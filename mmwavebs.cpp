@@ -27,7 +27,7 @@ void mmWaveBS::ThreadMain()
 		{
 			srand(time(NULL));
 			double p = ((double)rand()/(double)(RAND_MAX));
-			std::cout << "pp = " << p << std::endl;
+// 			std::cout << "pp = " << p << std::endl;
 			counter(p * 10.0);
 			if(m_status == Status::idle)
 			{

@@ -3,6 +3,7 @@ lamstar = 120;
 N=poissrnd(lamstar); x = rand(N,2)-0.5; % homogeneous PP
 ind = find(rand(N,1) < lambda(x)/lamstar);
 xa = x(ind,:); % thinned PP
+figure;
 plot(1000*x(:,1),1000*x(:,2), '^k');
 xlim([-500 500]);
 ylim([-500 500]);
@@ -20,3 +21,12 @@ set(h,'Units','Inches');
 pos = get(h,'Position');
 set(h,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)])
 print(h,'sysmodel1.pdf','-dpdf','-r0');
+%%
+save('input.mat', 'x');
+%%
+fileID = fopen('exptable.txt','w');
+for i=1:length(x)
+    fprintf(fileID,'%f %f\n',x(i,1),x(i,2));
+end
+fclose(fileID);
+
