@@ -30,7 +30,7 @@ private:
 	std::mutex m_mutex;
 	std::shared_ptr<Painter> m_painter;
 	bool stop_thread = false;
-	std::thread m_draw_thread;
+// 	std::thread m_draw_thread;
 };
 
 #endif // MANAGER_H

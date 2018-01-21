@@ -96,9 +96,9 @@ void Painter::update()
 		std::size_t red = (color & 0xff0000) >> 16; 
 		std::size_t green =(color & 0x00ff00) >> 8; 
 		std::size_t blue = (color & 0x0000ff);  	
-		
+// 		std::cout << "Status = " << dd.get()->getStatus() << std::endl;
 		if(dd.get()->getStatus()==Status::clusterHead)
-			*m_doc << Circle(Point(x, y), 2, Fill(Color(0,0,0)), Stroke(1.5, Color(red,green,blue)));
+			*m_doc << Circle(Point(x, y), 2, Fill(Color(0,0,0)), Stroke(1, Color(red,green,blue)));
 		else
 			*m_doc << Circle(Point(x, y), 2, Fill(Color(red,green,blue)), Stroke(1, Color(red, green, blue)));
 		

@@ -25,7 +25,10 @@ void mmWaveBS::ThreadMain()
     {
 		if(m_status == Status::idle)
 		{
-			counter(5.0);
+			srand(time(NULL));
+			double p = ((double)rand()/(double)(RAND_MAX));
+			std::cout << "pp = " << p << std::endl;
+			counter(p * 10.0);
 			if(m_status == Status::idle)
 			{
 				candidacy_msg message(m_xx, m_yy, m_id);

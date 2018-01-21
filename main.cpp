@@ -40,21 +40,22 @@ int main() {
 // 	BS->clusterHead.connect_member(&manager, &Manager::listen_For_ClusterHead);
 // 	BS->conflict.connect_member(&manager, &Manager::listen_For_Conflict);
 //   
-	for(int i =1;i<num_nodes;i++)
+	for(int i =1;i<100;i++)
 	{
 		std::shared_ptr<mmWaveBS> BS = std::make_shared<mmWaveBS>(100.0 *p2->data[i].pt[0] , 100.0 *p2->data[i].pt[1], _idGenerator->next());
 		BS.get()->setColor(0);
 		manager.m_vector_BSs.push_back(BS);
-		BS->Start();
-		BS->candidacy.connect_member(&manager, &Manager::listen_For_Candidacy);
-		BS->clusterHead.connect_member(&manager, &Manager::listen_For_ClusterHead);
-		BS->conflict.connect_member(&manager, &Manager::listen_For_Conflict);
+		BS.get()->Start();
+		BS.get()->candidacy.connect_member(&manager, &Manager::listen_For_Candidacy);
+		BS.get()->clusterHead.connect_member(&manager, &Manager::listen_For_ClusterHead);
+		BS.get()->conflict.connect_member(&manager, &Manager::listen_For_Conflict);
 	}
 	
 	
 	while(1)
 	{
 		true;
+// 		std::this_thread::sleep_for( std::chrono::seconds(1) );
 	}
   return 0;
 }
