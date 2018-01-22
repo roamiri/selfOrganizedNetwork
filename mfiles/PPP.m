@@ -24,7 +24,7 @@ print(h,'sysmodel1.pdf','-dpdf','-r0');
 %%
 save('input.mat', 'x');
 %%
-fileID = fopen('exptable.txt','w');
+fileID = fopen('exptable3.txt','w');
 for i=1:length(x)
     fprintf(fileID,'%f %f\n',x(i,1),x(i,2));
 end

@@ -1,5 +1,20 @@
 #include "mmwavebs.h"
 
+mmWaveBS::mmWaveBS(double x, double y, uint32_t id, Status st)
+: the_thread()
+{
+	m_xx =x; m_yy =y; m_id =id; m_status = st;
+}
+
+mmWaveBS::~mmWaveBS()
+{
+	stop_thread = true;
+	if(the_thread.joinable()) 
+		the_thread.join();
+// 	std::cout << "Deconstructor " << __FILE__ << std::endl;
+}
+
+
 void mmWaveBS::Start()
 {
     // This will start the thread. Notice move semantics!

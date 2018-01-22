@@ -13,12 +13,8 @@ class mmWaveBS{
 public:
     /* Explicitly using the default constructor to
      * underline the fact that it does get called */
-    mmWaveBS(double x, double y, uint32_t id, Status st=idle) : the_thread() { m_xx =x; m_yy =y; m_id =id; m_status = st;}
-    ~mmWaveBS()
-    {
-        stop_thread = true;
-        if(the_thread.joinable()) the_thread.join();
-    }
+    mmWaveBS(double x, double y, uint32_t id, Status st=idle);
+    ~mmWaveBS();
     void Start();
 	
     void setClusterID(int id) {cluster_id = id;}

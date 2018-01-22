@@ -7,8 +7,8 @@
 #include <math.h>
 #include <random>
 
-static double in_bound = 10.0;
-static double out_bound = 20.0;
+static double in_bound = 100.0;
+static double out_bound = 200.0;
 
 enum Status{idle, candiate, inBound, outBound, clusterHead};
 

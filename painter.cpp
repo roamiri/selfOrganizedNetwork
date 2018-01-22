@@ -61,11 +61,11 @@ void Painter::ThreadMain()
 	while(!m_stopThread)
 	{
 		std::this_thread::sleep_for( std::chrono::seconds(1) );
-		update();
-// 		if(m_draw)
-// 		{
-// 			m_draw = false;
-// 		}
+		if(m_draw)
+		{
+			update();
+			m_draw = false;
+		}
 		
 	}
 }
@@ -89,8 +89,8 @@ void Painter::update()
 	for(int i=0;i<size;i++)
 	{
 		std::shared_ptr<mmWaveBS> dd = m_nodes[i];
-		double x = dd.get()->getX();
-		double y = dd.get()->getY();
+		double x = (0.1) * dd.get()->getX();
+		double y = (0.1) * dd.get()->getY();
 	
 		std::size_t color = dd.get()->getColor();
 		std::size_t red = (color & 0xff0000) >> 16; 

@@ -36,7 +36,7 @@ Manager::~Manager()
 
 void Manager::listen_For_Candidacy(const candidacy_msg& message)
 {
-	std::cout << " Candidate received: xx = " << message.x << ", y=" << message.y << " from id=" << message.id << std::endl;
+	std::cout << " Candidate received: x=" << message.x << ", y=" << message.y << " from id=" << message.id << std::endl;
 	uint32_t candidate_id = message.id;
 	double x = message.x;
 	double y = message.y;
