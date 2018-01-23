@@ -11,6 +11,7 @@ figure;
 hold on;
 for i=1:num_cluster-2
     color = rand(1,3);
+%     color = [0,0,0];
     plot(clusters(i,1),clusters(i,2), '^', 'MarkerFaceColor',color,'MarkerEdgeColor',color, 'MarkerSize', 8, 'linewidth', 2);
     for j=3:2:max_num_members
         if(isnan(clusters(i,j))==0 && clusters(i,j)~=0.0)
