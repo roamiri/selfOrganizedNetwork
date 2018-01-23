@@ -3,12 +3,23 @@ function [G, L] = measure_channel(FBS,MBS,MUE,NumRealization)
     G = zeros(fbsNum+1, fbsNum+1);
     L = zeros(fbsNum+1, fbsNum+1);
     f=28.0; % Frequency in GHz
+    %lognormal shadowing
+    sigma = 8.7; %dB
+    NumRealization = 1e1;
+    X = sigma * randn(fbsNum, fbsNum, NumRealization);
+
+    for i=1:fbsNum
+        for j=1:fbsNum
+            Y(i,j)=(sum(X(i,j,:))/NumRealization);
+        end
+    end
+    
     for i=1:fbsNum
         xAgent = FBS{i}.X;
         yAgent = FBS{i}.Y;
         for j=1:fbsNum
             d = sqrt((xAgent-FBS{j}.FUEX)^2+(yAgent-FBS{j}.FUEY)^2);
-            PL0 = 72.0 +29.2*log10(d); % PL = alpha + 10*beta*log10(d)+X(zeta)
+            PL0 = 72.0 +29.2*log10(d)+Y(i,j); % PL = alpha + 10*beta*log10(d)+X(N(0,zeta^2))
             L(i,j) = 10^((PL0)/10);
         end
         d = sqrt((xAgent-MUE.X)^2+(yAgent-MUE.Y)^2);

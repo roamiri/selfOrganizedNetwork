@@ -206,14 +206,14 @@ end
             % CALCULATING NEXT STATE AND REWARD
             beta = fbs.dMUE/dth;
 %             R = beta*fbs.C_FUE*(mue(1).C).^2 -(fbs.C_FUE-q_fue).^2 - (1/beta)*dum1;
-%             R = q_fue^2 - (fbs.C_FUE-q_fue).^2;
-            if (fbs.C_FUE < q_fue)
-                xxx = (pi/(2*q_fue));
-                R = min(tan(xxx*fbs.C_FUE), 1000);
-            else
-                xxx = -(pi/(2*q_fue));
-                R = max(tan(xxx*fbs.C_FUE), -1000);
-            end
+             R = fbs.C_FUE - abs(fbs.C_FUE-q_fue);
+%             if (fbs.C_FUE < q_fue)
+%                 xxx = (pi/(2*q_fue));
+%                 R = min(tan(xxx*fbs.C_FUE), 1000);
+%             else
+%                 xxx = -(pi/(2*q_fue));
+%                 R = max(tan(xxx*fbs.C_FUE), -1000);
+%             end
             a = tic;
             for nextState=1:size(states,1)
                 if states(nextState,:) == fbs.state
@@ -256,6 +256,6 @@ end
     tt = toc(total);
     answer.time = tt - extra_time;
     QFinal = answer;
-    save(sprintf('Jan23/R_7_CL/pro_%d_%d_%d.mat',Npower, fbsCount, saveNum),'QFinal');
+    save(sprintf('Jan23/R_4_shadow_CL/pro_%d_%d_%d.mat',Npower, fbsCount, saveNum),'QFinal');
     FBS_out = FBS;
 end
