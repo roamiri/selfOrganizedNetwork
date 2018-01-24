@@ -5,12 +5,12 @@ function [G, L] = measure_channel(FBS,MBS,MUE,NumRealization)
     f=28.0; % Frequency in GHz
     %lognormal shadowing
     sigma = 8.7; %dB
-    NumRealization = 1e1;
-    X = sigma * randn(fbsNum, fbsNum, NumRealization);
+%     NumRealization = 1e1;
+    X = sigma * randn(fbsNum, fbsNum, 1e1);
 
     for i=1:fbsNum
         for j=1:fbsNum
-            Y(i,j)=(sum(X(i,j,:))/NumRealization);
+            Y(i,j)=(sum(X(i,j,:))/1e1);
         end
     end
     
