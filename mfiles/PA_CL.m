@@ -204,16 +204,8 @@ end
             end
             extra_time = extra_time + toc(a);
             % CALCULATING NEXT STATE AND REWARD
-            beta = fbs.dMUE/dth;
-%             R = beta*fbs.C_FUE*(mue(1).C).^2 -(fbs.C_FUE-q_fue).^2 - (1/beta)*dum1;
-%              R = fbs.C_FUE - abs(fbs.C_FUE-q_fue);
-            if (fbs.C_FUE < 4*q_fue)
-%                 xxx = (pi/(2*q_fue));
-                R = (q_fue - abs(fbs.C_FUE -2*q_fue))/(q_fue); %R = min(tan(xxx*fbs.C_FUE), 1000);
-            else
-%                 xxx = -(pi/(2*q_fue));
-                R = -1;%R = max(tan(xxx*fbs.C_FUE), -1000);
-            end
+%             beta = fbs.dMUE/dth;
+            R = R_9(fbs.C_FUE, q_fue);
             a = tic;
             for nextState=1:size(states,1)
                 if states(nextState,:) == fbs.state
