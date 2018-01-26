@@ -25,9 +25,9 @@ Pmax = 35; %dBm
 %gamma_th = log2(1+sinr_th);
 
 %% Minimum Rate Requirements for N users
-q_fue = 1.00; q_mue=1.00;
+q_fue = 0.5; q_mue=1.00;
 %% Q-Learning variables
-% Actions
+% Actios
 actions = linspace(Pmin, Pmax, Npower);
 
 % States
@@ -206,14 +206,14 @@ end
             % CALCULATING NEXT STATE AND REWARD
             beta = fbs.dMUE/dth;
 %             R = beta*fbs.C_FUE*(mue(1).C).^2 -(fbs.C_FUE-q_fue).^2 - (1/beta)*dum1;
-             R = fbs.C_FUE - abs(fbs.C_FUE-q_fue);
-%             if (fbs.C_FUE < q_fue)
+%              R = fbs.C_FUE - abs(fbs.C_FUE-q_fue);
+            if (fbs.C_FUE < 4*q_fue)
 %                 xxx = (pi/(2*q_fue));
-%                 R = min(tan(xxx*fbs.C_FUE), 1000);
-%             else
+                R = (q_fue - abs(fbs.C_FUE -2*q_fue))/(q_fue); %R = min(tan(xxx*fbs.C_FUE), 1000);
+            else
 %                 xxx = -(pi/(2*q_fue));
-%                 R = max(tan(xxx*fbs.C_FUE), -1000);
-%             end
+                R = -1;%R = max(tan(xxx*fbs.C_FUE), -1000);
+            end
             a = tic;
             for nextState=1:size(states,1)
                 if states(nextState,:) == fbs.state
@@ -256,6 +256,6 @@ end
     tt = toc(total);
     answer.time = tt - extra_time;
     QFinal = answer;
-    save(sprintf('Jan23/R_4_shadow_CL/pro_%d_%d_%d.mat',Npower, fbsCount, saveNum),'QFinal');
+    save(sprintf('Jan25/R_8/pro_%d_%d_%d.mat',Npower, fbsCount, saveNum),'QFinal');
     FBS_out = FBS;
 end
