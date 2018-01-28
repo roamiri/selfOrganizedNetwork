@@ -25,7 +25,7 @@ Pmax = 35; %dBm
 %gamma_th = log2(1+sinr_th);
 
 %% Minimum Rate Requirements for N users
-q_fue = 1.5; q_mue=1.00;
+q_fue = 10.0; q_mue=1.00;
 %% Q-Learning variables
 % Actios
 actions = linspace(Pmin, Pmax, Npower);
@@ -248,6 +248,6 @@ end
     tt = toc(total);
     answer.time = tt - extra_time;
     QFinal = answer;
-    save(sprintf('Jan27/R_4_shadow/pro_%d_%d_%d.mat',Npower, fbsCount, saveNum),'QFinal');
+    save(sprintf('Jan28/R_4_q10/pro_%d_%d_%d.mat',Npower, fbsCount, saveNum),'QFinal');
     FBS_out = FBS;
 end
