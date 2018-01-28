@@ -26,3 +26,7 @@ hold on;
 semilogx(d,PL2,'-b');
 % xlim([30 200]);
 grid on;
+c = 3e8; f=28e9;
+lambda = c/f;
+PL_los = -20 * log10(lambda./(4*pi*d));
+semilogx(d,PL_los,'-g');

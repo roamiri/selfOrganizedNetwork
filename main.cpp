@@ -23,7 +23,7 @@ int main()
   std::shared_ptr<Painter> _painter = std::make_shared<Painter>(manager.m_vector_BSs);
   _painter.get()->Start();
   
-  int num_nodes = 124;
+  int num_nodes = 150;
   
   
   // MAke a ... distribution of points
@@ -37,7 +37,7 @@ int main()
 
   // Read a file from matlab to simulate poisson point process
 	double data[num_nodes][2];
-	std::fstream _file("../mfiles/exptable.txt");
+	std::fstream _file("../mfiles/DATA/exptable_148.txt");
 	int i =0;
 	if(_file.fail())
 		std::cerr << "input data file does not exis!" << std::endl;
@@ -75,7 +75,7 @@ int main()
 	
 // 	while(1)
 	{
-		std::this_thread::sleep_for( std::chrono::seconds(100) );
+		std::this_thread::sleep_for( std::chrono::seconds(20) );
 		_painter.get()->Enable();
 	}
 	

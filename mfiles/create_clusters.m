@@ -29,9 +29,9 @@ xlabel('x-axis','FontSize',14, 'FontWeight','bold');
 ylabel('y-axis','FontSize',14, 'FontWeight','bold');
 % legend({'mmWave BS'},'FontSize',14, 'FontWeight','bold');
 %%
-savefig('cluster_model.fig')
-h = open('cluster_model.fig');
+% savefig('cluster_model2.fig')
+h = open('cluster2/cluster2.fig');
 set(h,'Units','Inches');
 pos = get(h,'Position');
 set(h,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)])
-print(h,'cluster_model.pdf','-dpdf','-r0');
+print(h,'cluster2/cluster2.pdf','-dpdf','-r0');

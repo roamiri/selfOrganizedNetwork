@@ -14,7 +14,7 @@ box on;
 % title('Example of mmWave BSs distribution','FontSize',14, 'FontWeight','bold');
 xlabel('x-axis','FontSize',14, 'FontWeight','bold');
 ylabel('y-axis','FontSize',14, 'FontWeight','bold');
-legend({'mmWave BS'},'FontSize',14, 'FontWeight','bold');
+% legend({'mmWave BS'},'FontSize',14, 'FontWeight','bold');
 %%
 h = open('sysmodel1.fig');
 set(h,'Units','Inches');
@@ -24,7 +24,7 @@ print(h,'sysmodel1.pdf','-dpdf','-r0');
 %%
 save('input.mat', 'x');
 %%
-fileID = fopen('exptable3.txt','w');
+fileID = fopen('exptable_148.txt','w');
 for i=1:length(x)
     fprintf(fileID,'%f %f\n',x(i,1),x(i,2));
 end
