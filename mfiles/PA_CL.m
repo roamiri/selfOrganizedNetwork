@@ -25,7 +25,7 @@ Pmax = 35; %dBm
 %gamma_th = log2(1+sinr_th);
 
 %% Minimum Rate Requirements for N users
-q_fue = 0.5; q_mue=1.00;
+q_fue = 1.5; q_mue=1.00;
 %% Q-Learning variables
 % Actios
 actions = linspace(Pmin, Pmax, Npower);
