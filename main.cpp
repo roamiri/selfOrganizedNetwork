@@ -37,7 +37,7 @@ int main()
 
   // Read a file from matlab to simulate poisson point process
 	double data[num_nodes][2];
-	std::fstream _file("../mfiles/DATA/exptable_148.txt");
+	std::fstream _file("../mfiles/DATA/exptable.txt");
 	int i =0;
 	if(_file.fail())
 		std::cerr << "input data file does not exis!" << std::endl;
