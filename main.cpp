@@ -57,7 +57,7 @@ int main()
 	}
   
   //   
-	for(int i =0;i<num_nodes;i++)
+	for(int i =0;i<130;i++)
 	{
 		if(data[i][0]!=NULL)
 		{

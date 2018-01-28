@@ -21,7 +21,7 @@ function [G, L] = measure_channel(FBS,MBS,MUE,NumRealization)
         for j=1:fbsNum
             d = sqrt((xAgent-FBS{j}.FUEX)^2+(yAgent-FBS{j}.FUEY)^2);
             if i==j
-                PL0 = -20 * log10(lambda./(4*pi*d));
+                PL0 = -20 * log10(lambda./(4*pi*d))+Y(i,j);
             else
                 PL0 = 72.0 +29.2*log10(d)+Y(i,j); % PL = alpha + 10*beta*log10(d)+X(N(0,zeta^2))
             end
