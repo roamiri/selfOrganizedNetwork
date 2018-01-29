@@ -9,7 +9,7 @@ for i=1:16
     T = 0.0;
     
     for j=1:100
-        s = sprintf('Jan23/R_4_shadow_CL/pro_32_%d_%d.mat',i,j);
+        s = sprintf('Jan28/R_4_q10/pro_32_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
@@ -29,6 +29,6 @@ plot(T_vec, '--*r', 'LineWidth',1,'MarkerSize',10);
 title('Time duration of proposed RF','FontSize',14, 'FontWeight','bold');
 xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('seconds','FontSize',14, 'FontWeight','bold');
-xlim([2 15]);
+xlim([2 14]);
 % ylim([3e4 5e4]);
 % legend({'proposed RF','[9]'},'FontSize',14, 'FontWeight','bold');

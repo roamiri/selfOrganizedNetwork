@@ -247,6 +247,7 @@ end
     answer.episode = episode;
     tt = toc(total);
     answer.time = tt - extra_time;
+    answer.q = q_fue;
     QFinal = answer;
     save(sprintf('Jan28/R_4_q10/pro_%d_%d_%d.mat',Npower, fbsCount, saveNum),'QFinal');
     FBS_out = FBS;

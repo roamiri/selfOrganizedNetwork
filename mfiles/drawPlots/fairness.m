@@ -37,7 +37,7 @@ end
 end
 plot(fariness, '--sr', 'LineWidth',1.5,'MarkerSize',10, 'MarkerFaceColor','r', 'MarkerEdgeColor','b');
 % plot(fairness_ref, 'b--.', 'LineWidth',1,'MarkerSize',10);
-xlim([2 15]);
+xlim([2 14]);
 ylim([0 1.3]);
 % title('Fairness index','FontSize',14, 'FontWeight','bold');
 xlabel('Cluster size','FontSize',14, 'FontWeight','bold');

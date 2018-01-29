@@ -9,12 +9,12 @@ for i=1:16
     episodes = 0;
     
     for j=1:100
-        s = sprintf('Jan23/R_4_shadow_CL/pro_%d_%d.mat',i,j);
+        s = sprintf('Jan28/R_4_q10/pro_32_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
-            C = QFinal.mue.C_profile;
-            episodes = episodes + size(C,2);
+%             C = QFinal.mue.C_profile;
+            episodes = episodes + QFinal.episode;
             Cnt = Cnt+1;
         end
     end
@@ -66,11 +66,11 @@ hold on;
 grid on;
 box on;
 plot(Episode_vec, '--*r', 'LineWidth',1,'MarkerSize',10);
-plot(Episode_vec_refNoshare, '--*b', 'LineWidth',1,'MarkerSize',10);
+% plot(Episode_vec_refNoshare, '--*b', 'LineWidth',1,'MarkerSize',10);
 % plot(Episode_vec_noshare, '--*g', 'LineWidth',1,'MarkerSize',10);
 title('Search time complexity','FontSize',14, 'FontWeight','bold');
 xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Number of iterations','FontSize',14, 'FontWeight','bold');
-xlim([2 16]);
+xlim([2 14]);
 ylim([3e4 5e4]);
 legend({'proposed RF','[9]'},'FontSize',14, 'FontWeight','bold');

@@ -9,7 +9,6 @@ sum_FUE = [];
 max_MUE = [];
 max_FUE = [];
 C_FUE_Mat = cell(1,16);
-%%
 for i=1:16
     fprintf('FBS num = %d\t', i);
     maxmue = 0.;
@@ -23,7 +22,7 @@ for i=1:16
 
     
     for j=1:100
-        s = sprintf('Jan27/R_4_shadow2/pro_32_%d_%d.mat',i,j);
+        s = sprintf('Jan28/R_4_q10/pro_32_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
@@ -102,7 +101,7 @@ figure;
 hold on;
 grid on;
 box on;
-plot( ones(1,14)*1.5, '--b', 'LineWidth',1);
+plot( ones(1,14)*10., '--b', 'LineWidth',1);
 for i=2:14
     vec = C_FUE_Mat{i};
 %     vec_ref = C_FUE_Mat_ref{i};
