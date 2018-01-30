@@ -22,7 +22,7 @@ for i=1:16
 
     
     for j=1:100
-        s = sprintf('Jan28/R_4_q10/pro_32_%d_%d.mat',i,j);
+        s = sprintf('Jan27/R_4_q0.5/pro_32_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
@@ -132,31 +132,3 @@ ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
 xlim([2 14]);
 ylim([0 100]);
 legend({'CDP-Q'},'FontSize',14, 'FontWeight','bold');
-%%
-h = open('DATA/R_4_q1.5/UE_C.fig');
-legend({'required QoS ($log_2(q_k)$)','CDP-Q'},'FontSize',14, 'FontWeight','bold','Interpreter','latex');
-ax = gca;
-ax.FontWeight = 'bold';
-ax.FontSize = 16;
-set(h,'Units','Inches');
-pos = get(h,'Position');
-set(h,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)])
-print(h,'DATA/R_4_q1.5/UE_C.pdf','-dpdf','-r0');
-%%
-h = open('DATA/R_4_q1.5/fairness.fig');
-ax = gca;
-ax.FontWeight = 'bold';
-ax.FontSize = 16;
-set(h,'Units','Inches');
-pos = get(h,'Position');
-set(h,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)])
-print(h,'DATA/R_4_q1.5/fairness.pdf','-dpdf','-r0');
-%%
-h = open('DATA/R_4_q1.5/sum.fig');
-ax = gca;
-ax.FontWeight = 'bold';
-ax.FontSize = 16;
-set(h,'Units','Inches');
-pos = get(h,'Position');
-set(h,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)])
-print(h,'DATA/R_4_q1.5/sum.pdf','-dpdf','-r0');
