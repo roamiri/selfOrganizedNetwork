@@ -3,7 +3,7 @@
 %   Reinforcement Learning; Cooperative Learning (CL) 
 %   And it takes the number of Npower as the number of columns of Q-Table
 %
-function FBS_out = PA_CL(Npower, fbsCount,femtocellPermutation, NumRealization, saveNum, CL)
+function FBS_out = PA_CL_2(Npower, fbsCount,femtocellPermutation, NumRealization, saveNum, CL)
 
 %% Initialization
 clc;
