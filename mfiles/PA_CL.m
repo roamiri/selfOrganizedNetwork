@@ -16,7 +16,7 @@ Pmax = 35; %dBm
 %gamma_th = log2(1+sinr_th);
 
 %% Minimum Rate Requirements for N users
-q_fue = 10.0;
+q_fue = 2.83;
 %% Q-Learning variables
 % Actios
 actions = linspace(Pmin, Pmax, Npower);
@@ -124,9 +124,9 @@ end
                         end
                     end
                     if CL == 1 
-                        [M, index] = max(sumQ(kk,:));     % CL method
+                        [M, index] = max(sumQ(kk,:));    % CL method
                     else                                    
-                        [M, index] = max(fbs.Q(kk,:));   %IL method
+                        [M, index] = max(fbs.Q(kk,:));   % IL method
                     end
 %                     fbs = fbs.setPower(actions(index));
                       a1 = toc(a);
@@ -146,9 +146,9 @@ end
                 end
                 
                 if CL == 1 
-                    [M, index] = max(sumQ(kk,:));     % CL method
+                    [M, index] = max(sumQ(kk,:));    % CL method
                 else                                    
-                    [M, index] = max(fbs.Q(kk,:));   %IL method
+                    [M, index] = max(fbs.Q(kk,:));   % IL method
                 end
 %                 fbs = fbs.setPower(actions(index));
                 fbs.P = actions(index);
@@ -239,6 +239,6 @@ end
     answer.time = tt - extra_time;
     answer.q = q_fue;
     QFinal = answer;
-    save(sprintf('Jan28/R_4_q10/pro_%d_%d_%d.mat',Npower, fbsCount, saveNum),'QFinal');
+    save(sprintf('April9/R_4_1.5/pro_%d_%d_%d.mat',Npower, fbsCount, saveNum),'QFinal');
     FBS_out = FBS;
 end
