@@ -1,27 +1,28 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %   Simulation of Power Allocation in dense mmWave network using 
-%   Reinforcement Learning; Cooperative Learning (CL) 
-%   And it takes the number of Npower as the number of columns of Q-Table
+%   Spontaneous power allocation
+%   All BSs use maximum power
 %
-function FBS_out = PA_CL_2(Npower, fbsCount,femtocellPermutation, NumRealization, saveNum, CL)
+function FBS_out = PA_Spon(Npower, fbsCount,femtocellPermutation, NumRealization, saveNum, CL)
 
 %% Initialization
 clc;
 total = tic;
 %% Parameters
-Pmin = -30;                                                                                                                                                                                                                                                                                                                                                                           %dBm
+Pmin = -10;                                                                                                                                                                                                                                                                                                                                                                           %dBm
 Pmax = 35; %dBm
 
-SINR_th = 2.82;%10^(2/10); % I am not sure if it is 2 or 20!!!!!
+%sinr_th = 1.64;%10^(2/10); % I am not sure if it is 2 or 20!!!!!
+%gamma_th = log2(1+sinr_th);
 
 %% Minimum Rate Requirements for N users
-q_fue = 10.0;
+q_fue = 2.83; q_mue = 2.83;
 %% Q-Learning variables
 % Actios
 actions = linspace(Pmin, Pmax, Npower);
 
 % States
-states = allcomb(0:3); % states = (dMUE , dBS)
+states = allcomb(0:3 , 0:3); % states = (dMUE , dBS)
 
 % Q-Table
 % Q = zeros(size(states,1) , size(actions , 2));
@@ -32,7 +33,11 @@ sumQ = ones(size(states,1) , Npower) * 0.0;
 
 alpha = 0.5; gamma = 0.9; epsilon = 0.1 ; Iterations = 50000;
 %% Generate the UEs
-mue = UE(204, 207);
+mue(1) = UE(204, 207);
+% mue(1) = UE(150, 150);
+% mue(1) = UE(-200, 0);
+% selectedMUE = mue(mueNumber);
+MBS = BaseStation(0 , 0 , 50);
 %%
 %Generate fbsCount=16 FBSs, FemtoStation is the agent of RL algorithm
 FBS_Max = cell(1,16);
@@ -119,9 +124,9 @@ end
                         end
                     end
                     if CL == 1 
-                        [M, index] = max(sumQ(kk,:));     % CL method
+                        [M, index] = max(sumQ(kk,:));    % CL method
                     else                                    
-                        [M, index] = max(fbs.Q(kk,:));   %IL method
+                        [M, index] = max(fbs.Q(kk,:));   % IL method
                     end
 %                     fbs = fbs.setPower(actions(index));
                       a1 = toc(a);
@@ -141,9 +146,9 @@ end
                 end
                 
                 if CL == 1 
-                    [M, index] = max(sumQ(kk,:));     % CL method
+                    [M, index] = max(sumQ(kk,:));    % CL method
                 else                                    
-                    [M, index] = max(fbs.Q(kk,:));   %IL method
+                    [M, index] = max(fbs.Q(kk,:));   % IL method
                 end
 %                 fbs = fbs.setPower(actions(index));
                 fbs.P = actions(index);
@@ -162,10 +167,10 @@ end
             mue(i)=MUE;
         end
 
-%         dum1 = 1.0;
-%         for i=1:size(mue,2)
-%             dum1 = dum1 * (mue(i).C-q_mue)^2;
-%         end
+        dum1 = 1.0;
+        for i=1:size(mue,2)
+            dum1 = dum1 * (mue(i).C-q_mue)^2;
+        end
         
         for j=1:size(FBS,2)
             fbs = FBS{j};
@@ -234,6 +239,6 @@ end
     answer.time = tt - extra_time;
     answer.q = q_fue;
     QFinal = answer;
-    save(sprintf('Jan28/R_4_q10/pro_%d_%d_%d.mat',Npower, fbsCount, saveNum),'QFinal');
+    save(sprintf('April9/R_4_1.5/pro_%d_%d_%d.mat',Npower, fbsCount, saveNum),'QFinal');
     FBS_out = FBS;
 end

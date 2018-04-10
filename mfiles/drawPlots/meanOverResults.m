@@ -22,7 +22,7 @@ for i=1:16
 
     
     for j=1:100
-        s = sprintf('Jan27/R_4_q0.5/pro_32_%d_%d.mat',i,j);
+        s = sprintf('DATA/April9/R_4_1.5_CL/pro_32_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
@@ -62,7 +62,7 @@ for i=1:16
     
     for j=1:100
 %         s = sprintf('Rref_1/R3_%d_%d.mat',i,j);
-        s = sprintf('oct10/R_18_time/pro_%d_%d.mat',i,j);
+        s = sprintf('DATA/April9/R_4_1.5_IL/pro_32_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
@@ -101,13 +101,14 @@ figure;
 hold on;
 grid on;
 box on;
-plot( ones(1,14)*10., '--b', 'LineWidth',1);
+plot( ones(1,14)*1.5, '--b', 'LineWidth',1);
 for i=2:14
-    vec = C_FUE_Mat{i};
-%     vec_ref = C_FUE_Mat_ref{i};
-    for j=1:size(vec,2)
-        plot(i,vec(j), 'sr', 'LineWidth',1.5,'MarkerSize',10, 'MarkerFaceColor','r', 'MarkerEdgeColor','b');
-%         plot(i,vec_ref(j), '*b', 'LineWidth',1,'MarkerSize',10);
+%     vec = C_FUE_Mat{i};
+    vec_ref = C_FUE_Mat_ref{i};
+%     for j=1:size(vec,2)
+    for j=1:size(vec_ref,2)
+%         plot(i,vec(j), 'sr', 'LineWidth',1.5,'MarkerSize',10, 'MarkerFaceColor','r', 'MarkerEdgeColor','b');
+        plot(i,vec_ref(j), '*b', 'LineWidth',1,'MarkerSize',10);
     end
 end
 % plot(min_FUE, '--r', 'LineWidth',1,'MarkerSize',10);
@@ -125,7 +126,7 @@ grid on;
 box on;
 % plot( ones(1,16)*2.0, '--k', 'LineWidth',1 );
 plot(sum_FUE, '--sr', 'LineWidth',1.5,'MarkerSize',10, 'MarkerFaceColor','r', 'MarkerEdgeColor','b');
-% plot(sum_FUE_ref, '--*b', 'LineWidth',1,'MarkerSize',10);
+plot(sum_FUE_ref, '--*b', 'LineWidth',1,'MarkerSize',10);
 % title('SUM capacity of cluster members','FontSize',14, 'FontWeight','bold');
 xlabel('Cluster size','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
