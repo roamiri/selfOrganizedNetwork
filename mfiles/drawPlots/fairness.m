@@ -16,30 +16,40 @@ hold on;
 grid on;
 box on;
 
-fariness = zeros(1,16);
-fariness_ref = zeros(1,16);
+fariness_IL = zeros(1,16);
+fariness_CL = zeros(1,16);
+fariness_spon = zeros(1,16);
+
 for i=1:16
-vec = C_FUE_Mat{i};
-% vec_ref = C_FUE_Mat_ref{i};
-num = 0.0;
-num_ref = 0.0;
-denom = 0.0;
-denom_ref = 0.0;
-n = size(vec,2);
+vec_IL = C_FUE_Mat_IL{i};
+vec_CL = C_FUE_Mat_CL{i};
+vec_spon = C_FUE_Mat_spon{i};
+num_IL = 0.0;
+num_CL = 0.0;
+num_spon = 0.0;
+denom_IL = 0.0;
+denom_CL = 0.0;
+denom_spon = 0.0;
+n = size(vec_IL,2);
 for j=1:n
-    num = num + vec(j);
-%     num_ref = num_ref + vec_ref(j);
-    denom = denom + vec(j)^2;
-%     denom_ref = denom_ref + vec_ref(j)^2;
+    num_IL = num_IL + vec_IL(j);
+    num_CL = num_CL + vec_CL(j);
+    num_spon = num_spon + vec_spon(j);
+    denom_IL = denom_IL + vec_IL(j)^2;
+    denom_CL = denom_CL + vec_CL(j)^2;
+    denom_spon = denom_spon + vec_spon(j)^2;
 end
-    fariness(i) = (num^2)/(n*denom);
-%     fairness_ref(i) = (num_ref^2)/(n*denom_ref);
+    fariness_IL(i) = (num_IL^2)/(n*denom_IL);
+    fariness_CL(i) = (num_CL^2)/(n*denom_CL);
+    fariness_spon(i) = (num_spon^2)/(n*denom_spon);
 end
-plot(fariness, '--sr', 'LineWidth',1.5,'MarkerSize',10, 'MarkerFaceColor','r', 'MarkerEdgeColor','b');
-% plot(fairness_ref, 'b--.', 'LineWidth',1,'MarkerSize',10);
+plot(fariness_IL, '--sr', 'LineWidth',1.5,'MarkerSize',10, 'MarkerFaceColor','r', 'MarkerEdgeColor','b');
+plot(fariness_CL,  '--dg', 'LineWidth',1,'MarkerSize',10);
+% plot(fariness_spon, 'b--.', 'LineWidth',1,'MarkerSize',10);
+
 xlim([2 14]);
-ylim([0 1.3]);
+ylim([0.8 1.1]);
 % title('Fairness index','FontSize',14, 'FontWeight','bold');
 xlabel('Cluster size','FontSize',14, 'FontWeight','bold');
 ylabel('Jain''s Index For Fairness','FontSize',14, 'FontWeight','bold');
-legend({'CDP-Q fairness in each cluster'},'FontSize',14, 'FontWeight','bold');
+legend({'CDP-Q/IL','CDP-Q/CL'},'FontSize',14, 'FontWeight','bold');
